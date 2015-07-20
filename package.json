@@ -1,0 +1,15 @@
+{
+  "name": "fake-request",
+  "version": "0.0.1",
+  "main": "src/fake-request.js",
+  "description": "Mocking XMLHttpRequest for testing on Node.js",
+  "homepage": "https://github.com/acvetkov/fake-request",
+  "author": {
+    "name": "Aleksey Tsvetkov",
+    "email": "aleksey.dmitrich@gmail.com"
+  },
+  "devDependencies": {
+    "URIjs": "^1.15.2",
+    "sinon": "^1.15.4"
+  }
+}
