@@ -120,3 +120,8 @@ it('should be ...', function () {
     });
 });
 ```
+
+Any questions?
+--------------
+
+Feel free to [open issue](https://github.com/acvetkov/fake-request/issues).
