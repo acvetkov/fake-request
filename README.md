@@ -10,38 +10,6 @@ Installation
 npm install fake-request
 ```
 
-
-Where it works
---------------
-
-Node.js >= 0.10
-
-```javascript
-var FakeRequest = require('fake-request');
-```
-
-The goal of this module is testing XMLHttp request on Node.js platform, but you can make build for real browser or PhantomJS.
-
-At first install devDependencies
-
-```javascript
-npm install fake-request --save-dev
-```
-
-and make packed version
-
-
-```javascript
-grunt build
-```
-
-and in your browser code
-
-```html
-<script src='path/to/fake-request.0.0.2.min.js'>
-```
-
-
 Cooking with pleasure
 ---------------------
 
@@ -150,6 +118,52 @@ it('should be ...', function () {
         responseHeaders: 'content-type: text/html'
     });
 });
+```
+
+Where it works
+--------------
+
+Node.js >= 0.10
+
+```javascript
+var FakeRequest = require('fake-request');
+```
+
+The goal of this module is testing XMLHttp request on Node.js platform, but you can make build for real browser or PhantomJS.
+
+At first install devDependencies
+
+```javascript
+npm install fake-request --save-dev
+```
+
+and make packed UMD version (require.js, CommonJS, global)
+
+
+```javascript
+grunt build
+```
+
+and in your browser code
+
+```html
+<script src='path/to/fake-request.0.0.2.min.js'>
+```
+or 
+
+```js
+// require.js
+define(['path/to/fake-request'], function (FakeRequest) {
+    FakeRequest.mock();
+});
+// or 
+var FakeRequest = requirejs('path/to/fake-request');
+```
+
+and finally you can use CommonJS version like Node.js
+
+```javascript
+var FakeRequest = require('path/to/fake-request');
 ```
 
 Any questions?
