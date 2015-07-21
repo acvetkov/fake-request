@@ -1,6 +1,6 @@
 {
   "name": "fake-request",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "src/fake-request.js",
   "description": "Mocking XMLHttpRequest for testing on Node.js",
   "homepage": "https://github.com/acvetkov/fake-request",
@@ -9,7 +9,31 @@
     "email": "aleksey.dmitrich@gmail.com"
   },
   "dependencies": {
-    "URIjs": "^1.15.2",
-    "sinon": "^1.15.4"
-  }
+    "URIjs": "^1.15.2"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-jscs": "^1.8.0",
+    "grunt-webpack": "^1.0.8",
+    "jshint-stylish": "^2.0.1",
+    "load-grunt-tasks": "^3.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acvetkov/fake-request"
+  },
+  "bugs": {
+    "url": "https://github.com/acvetkov/fake-request/issues"
+  },
+  "keywords": [
+    "XMLHttpRequest",
+    "mock",
+    "test",
+    "request",
+    "nodejs"
+  ]
 }
