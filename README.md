@@ -3,16 +3,56 @@ Fake request
 
 XMLHttpRequest mocker for testing your awesome js-code.
 
+Installation
+------------
+
+```
+npm install fake-request
+```
+
+
+Where it works
+--------------
+
+Node.js >= 0.10
+
+```javascript
+var FakeRequest = require('fake-request');
+```
+
+The goal of this module is testing XMLHttp request on Node.js platform, but you can make build for real browser or PhantomJS.
+
+At first install devDependencies
+
+```javascript
+npm install fake-request --save-dev
+```
+
+and make packed version
+
+
+```javascript
+grunt build
+```
+
+and in your browser code
+
+```html
+<script src='path/to/fake-request.0.0.2.min.js'>
+```
+
+
 Cooking with pleasure
 ---------------------
 
 Simple module with request:
 
 ```javascript
+// your own XMLHttpRequest module
 var Request = require('request');
 new Request()
-        .set('header', 'value')
-        .get('http://my-domain.com/path/?a=1&b=2');
+        .set('header', 'value') // set request header
+        .get('http://my-domain.com/path/?a=1&b=2'); // send GET request
 ```
 
 Let's test it:
@@ -45,15 +85,6 @@ it('should send correct query string', function () {
 });
 ```
 
-Every method is [sinon](http://sinonjs.org/docs/#spies) spy
-
-```javascript
-it('should call getAllResponseHeaders', function () {
-    // every method is sinon spy
-    assert.ok(FakeRequest.lastRequest.getAllResponseHeaders.calledOnce.withArgs('my-mega-header'));
-});
-```
-
 You can test request body
 
 ```javascript
@@ -76,7 +107,7 @@ Let's test request headers
 
 ```javascript
 new Request()
-        .set('header1', 'value1')
+        .set('header1', 'value1') // set request headers
         .set('header2', 'value2')
         .set('header3', 'value3')
         .set('header4', 'value4')
@@ -106,13 +137,13 @@ it('should be ...', function () {
         status: 200,
         responseText: 'my response'
     });
-    FakeRequest.respondTo(0, { // call onload handler, if it's specified
+    FakeRequest.respondTo(0, { // call onload handler for first request, if it's specified
         readyState: 4,
         status: 200,
         responseText: 'my response',
         responseHeaders: 'content-type: text/json'
     });
-    FakeRequest.lastRequest.respond({ // call onload handler, if it's specified
+    FakeRequest.lastRequest.respond({ // call onload handler for last request, if it's specified
         readyState: 4,
         status: 200,
         responseText: 'my response',
