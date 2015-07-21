@@ -2,45 +2,10 @@
 
     'use strict';
 
-    var sinon = require('sinon');
     var URI = require('URIjs');
-    var sandbox = sinon.sandbox.create();
+    var utils = require('./utils');
 
     var onCreateCallback;
-
-    var isFunction = function (param) {
-        return typeof param === 'function';
-    };
-
-    var parseHeaders = function(headers) {
-        var lines = headers.split(/\r?\n/);
-        var fields = {};
-        var index;
-        var field;
-        var val;
-        var lastElement = lines[lines.length - 1];
-        if (lastElement.length < 3) {
-            lines.pop();
-        }
-        lines.forEach(function (line) {
-            index = line.indexOf(':');
-            field = line.slice(0, index).toLowerCase();
-            val = line.slice(index + 1).trim();
-            fields[field] = val;
-        });
-
-        return fields;
-    }
-
-    var spyMethods = [
-        'setRequestHeader',
-        'open',
-        'abort',
-        'send',
-        'getAllResponseHeaders',
-        'getResponseHeader',
-        'overrideMimeType'
-    ];
 
     /**
      * Request (Fake XMLHttpRequest)
@@ -57,11 +22,7 @@
         this.withCredentials = false;
         this.responseType = '';
 
-        spyMethods.forEach(function (method) {
-            this[method] = sandbox.spy(this, method);
-        }, this);
-
-        if (isFunction(onCreateCallback)) {
+        if (utils.isFunction(onCreateCallback)) {
             onCreateCallback(this);
         }
     };
@@ -120,7 +81,8 @@
          */
         abort: function (data) {
             this._applyResponse(data);
-            if (isFunction(this.onabort)) {
+            this._aborted = true;
+            if (utils.isFunction(this.onabort)) {
                 this.onabort.call(this);
             }
         },
@@ -139,7 +101,7 @@
          * @returns {*}
          */
         getResponseHeader: function (header) {
-            var headers = parseHeaders(this.responseHeaders);
+            var headers = utils.parseHeaders(this.responseHeaders);
             if (headers) {
                 return headers[header];
             }
@@ -158,16 +120,9 @@
          */
         respond: function (data) {
             this._applyResponse(data);
-            if (isFunction(this.onload)) {
+            if (utils.isFunction(this.onload)) {
                 this.onload.call(this);
             }
-        },
-
-        /**
-         * Reset sinon spies
-         */
-        reset: function () {
-            sandbox.reset();
         },
 
         /**
@@ -260,6 +215,14 @@
         },
 
         /**
+         * returns true, if request aborted
+         * @returns {boolean}
+         */
+        get aborted() {
+            return Boolean(this._aborted);
+        },
+
+        /**
          * set request url
          * @param {String} value
          */
@@ -269,8 +232,8 @@
         },
 
         upload: {
-            onprogress: sandbox.spy(),
-            onuploadprogress: sandbox.spy()
+            onprogress: utils.stub,
+            onuploadprogress: utils.stub
         }
     };
 
