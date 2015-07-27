@@ -133,7 +133,7 @@
          */
         _applyResponses: function () {
             this._applyUrlResponse();
-            this._applyAllResponse()
+            this._applyAllResponse();
         },
 
         /**

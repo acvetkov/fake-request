@@ -88,7 +88,7 @@
             if (originalQuery && compareQuery) {
                 return Object.keys(compareQuery).every(function (compareKey) {
                     return compareKey in originalQuery;
-                })
+                });
             }
             return true;
         },
