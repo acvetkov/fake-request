@@ -164,7 +164,7 @@ You can get any request by FakeRequest.get();
 ```javascript
 // by number
 FakeRequest.get(0) // returns first request
-FakeRequest.get(0).respond(response); // respond to last
+FakeRequest.get(0).respond(response); // respond to first
 // by regexp
 FakeRequest.get(/mydomain\.com/).forEach(function (req) {
     req.respond(response);
@@ -195,7 +195,7 @@ The goal of this module is testing XMLHttp request on Node.js platform, but you 
 At first install devDependencies
 
 ```javascript
-npm install fake-request --save-dev
+npm install fake-request
 ```
 
 and make packed UMD version (require.js, CommonJS, global)
@@ -231,7 +231,7 @@ Tests
 -----
 
 ```javascript
-npm install fake-request --save-dev
+npm install fake-request
 ```
 
 ```javascript
