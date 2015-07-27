@@ -16,11 +16,9 @@ Cooking with pleasure
 Simple module with request:
 
 ```javascript
-// your own XMLHttpRequest module
-var Request = require('request');
-new Request()
-        .set('header', 'value') // set request header
-        .get('http://my-domain.com/path/?a=1&b=2'); // send GET request
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'http://my-domain.com/path/?a=1&b=2');
+xhr.send();
 ```
 
 Let's test it:
@@ -40,7 +38,7 @@ it('should send request', function () {
     assert.lengthOf(FakeRequest.requests, 1);
 });
 it('should set correct url', function () {
-    var uri = FakeRequest.lastRequest.uriObject; // URIjs inside!
+    var uri = FakeRequest.lastRequest.uri; // URIjs inside!
     assert.equal(uri.host(), 'my-domain.com');
     assert.equal(uri.protocol(), 'http');
     assert.equal(uri.pathname(), '/path/');
@@ -56,30 +54,44 @@ it('should send correct query string', function () {
 You can test request body
 
 ```javascript
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'http://my-domain.com/path/?a=1&b=2');
+xhr.send('body1=a&body2=b');
+```
+
+```javascript
 it('should have correct body', function () {
     assert.deepEqual(FakeRequest.lastRequest.body, {
-        param: 'body_param' 
+        body1: 'a',
+        body2: 'b'
     });
 });
 ```
 
-Maybe you pass FormData? 
+Maybe you pass FormData/Blob/ArrayBuffer? 
+
+```javascript
+var body = new Blob();
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'http://my-domain.com/path/?a=1&b=2');
+xhr.send(blob);
+```
 
 ```javascript
 it('should have correct body', function () {
-    assert.equal(FakeRequest.lastRequest.body, yourFormData);
+    assert.equal(FakeRequest.lastRequest.body, blob);
 });
 ```
 
 Let's test request headers
 
 ```javascript
-new Request()
-        .set('header1', 'value1') // set request headers
-        .set('header2', 'value2')
-        .set('header3', 'value3')
-        .set('header4', 'value4')
-        .get('url');
+var xhr = new XMLHttpRequest();
+xhr.setRequestHeader('header1', 'value1');
+xhr.setRequestHeader('header2', 'value2');
+xhr.setRequestHeader('header3', 'value3');
+xhr.open('GET', 'http://my-domain.com/path/?a=1&b=2');
+xhr.send('body1=a&body2=b');
 ```
 
 and tests
@@ -89,8 +101,7 @@ it('should have correct request headers', function () {
     assert.deepEqual(FakeRequest.lastRequest.headers, {
         header1: 'value1',
         header2: 'value2',
-        header3: 'value3',
-        header4: 'value4'
+        header3: 'value3'
     });
 });
 ```
@@ -117,6 +128,56 @@ it('should be ...', function () {
         responseText: 'my response',
         responseHeaders: 'content-type: text/html'
     });
+});
+```
+
+You can respond to specified request
+
+```javascript
+// via number arg
+FakeRequest.respondTo(0, response); // responds to first request
+FakeRequest.respondTo(1, response); // responds to second request
+// via regexp arg (for url)
+FakeRequest.respondTo(/my-domain.*a=b/, response);
+// via string
+FakeRequest.respondTo('http://my-domain/path/?a=b', response);
+FakeRequest.respondTo('http://my-domain', response);
+```
+
+You can respond to all
+
+```javascript
+FakeRequest.respond(response);
+```
+
+or respond to last
+
+```javascript
+FakeRequest.respondToLast(response);
+```
+
+Get request
+-----------
+
+You can get any request by FakeRequest.get();
+
+```javascript
+// by number
+FakeRequest.get(0) // returns first request
+FakeRequest.get(0).respond(response); // respond to last
+// by regexp
+FakeRequest.get(/mydomain\.com/).forEach(function (req) {
+    req.respond(response);
+});
+FakeRequest.get(/mydomain\.com.*\/search/).forEach(function (req) {
+    assert.equal(req.status, 200);
+});
+// by string
+FakeRequest.get('http://my-site.com').forEach(function (req) {
+    assert.equal(req.status, 200);
+});
+FakeRequest.get('http://my-site.com/path/?a=b').forEach(function (req) {
+    req.respond(response);
 });
 ```
 
@@ -165,6 +226,18 @@ and finally you can use CommonJS version like Node.js
 ```javascript
 var FakeRequest = require('path/to/fake-request');
 ```
+
+Tests
+-----
+
+```javascript
+npm install fake-request --save-dev
+```
+
+```javascript
+grunt test
+```
+
 
 Any questions?
 --------------
