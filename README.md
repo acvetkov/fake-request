@@ -1,5 +1,6 @@
-Fake request
-============
+# Fake request
+
+[![Build Status](https://travis-ci.org/acvetkov/fake-request.svg?branch=master)](https://travis-ci.org/acvetkov/fake-request)
 
 XMLHttpRequest mocker for testing your awesome js-code.
 
