@@ -48,12 +48,49 @@
         },
 
         /**
+         * is param number
+         * @param {*} param
+         * @returns {boolean}
+         */
+        isNumber: function (param) {
+            return typeof param === 'number';
+        },
+
+        /**
          * is param regexp
          * @param {*} param
          * @returns {boolean}
          */
         isRegexp: function (param) {
             return param instanceof RegExp;
+        },
+
+        /**
+         * compare uri
+         * @returns {Boolean}
+         */
+        isEqualsURI: function (originalURI, compareURI) {
+            if (originalURI.host() !== compareURI.host()) {
+                return false;
+            }
+            if (compareURI.path() && compareURI.path() !== '/' && compareURI.path() !== originalURI.path()) {
+                return false;
+            }
+            return this.isEqualsQuery(originalURI.query(true), compareURI.query(true));
+        },
+
+        /**
+         * @param originalQuery
+         * @param compareQuery
+         * @returns {Boolean}
+         */
+        isEqualsQuery: function (originalQuery, compareQuery) {
+            if (originalQuery && compareQuery) {
+                return Object.keys(compareQuery).every(function (compareKey) {
+                    return compareKey in originalQuery;
+                })
+            }
+            return true;
         },
 
         /**

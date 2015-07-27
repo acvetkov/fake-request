@@ -6,6 +6,7 @@
     var utils = require('./utils');
 
     var onCreateCallback;
+    var onSendCallback;
 
     /**
      * Request (Fake XMLHttpRequest)
@@ -33,6 +34,14 @@
      */
     Request.onCreate = function (callback) {
         onCreateCallback = callback;
+    };
+
+    /**
+     * trigger send request
+     * @param {Function} callback
+     */
+    Request.onSend = function (callback) {
+        onSendCallback = callback;
     };
 
     Request.prototype = {
@@ -73,6 +82,10 @@
          */
         send: function (data) {
             this.data = data;
+
+            if (utils.isFunction(onSendCallback)) {
+                onSendCallback(this);
+            }
         },
 
         /**
@@ -123,6 +136,7 @@
             if (utils.isFunction(this.onload)) {
                 this.onload.call(this);
             }
+            this._responded = true;
         },
 
         /**
@@ -234,6 +248,22 @@
         upload: {
             onprogress: utils.stub,
             onuploadprogress: utils.stub
+        },
+
+        /**
+         * already responded
+         * @returns {boolean}
+         */
+        get responded() {
+            return Boolean(this._responded);
+        },
+
+        /**
+         * URIjs object
+         * @returns {*|exports|module.exports}
+         */
+        get uri() {
+            return this._urlObject;
         }
     };
 

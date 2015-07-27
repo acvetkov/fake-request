@@ -5,6 +5,8 @@
     'use strict';
 
     var Request = require('./request');
+    var URI = require('URIjs');
+    var utils = require('./utils');
 
     module.exports = {
 
@@ -12,6 +14,9 @@
         cache: null,
         requests: [],
         globalScope: globalScope,
+
+        responseToAll: null,
+        urlResponseBuffer: [],
 
         /**
          * Replace XMLHttpRequest by fake request
@@ -22,9 +27,7 @@
                 this.isFakeSet = true;
                 this.cache = this.globalScope.XMLHttpRequest;
                 this.globalScope.XMLHttpRequest = Request;
-                Request.onCreate(function (request) {
-                    self.requests.push(request);
-                });
+                this._listenRequest();
             }
         },
 
@@ -33,6 +36,8 @@
          */
         reset: function () {
             this.requests = [];
+            this.responseToAll = null;
+            this.urlResponseBuffer = [];
         },
 
         /**
@@ -46,15 +51,28 @@
         },
 
         /**
-         * respond to specified request number
-         * @param {Number} requestNumber
+         * Respond to all requests
          * @param {Object} data
          */
-        respondTo: function (requestNumber, data) {
-            var request = this.requests[requestNumber];
-            if (request) {
-                request.respond(data);
+        respond: function (data) {
+            this.responseToAll = data;
+            this._applyResponses();
+        },
+
+        /**
+         * respond to specified request number
+         * @param {String|RegExp|Number} req
+         * @param {Object} data
+         */
+        respondTo: function (req, data) {
+            if (utils.isNumber(req)) {
+                return this._applyResonseToId(req, data);
             }
+            this.urlResponseBuffer.push({
+                rule: req,
+                response: data
+            });
+            this._applyResponses();
         },
 
         /**
@@ -65,6 +83,133 @@
             var lastRequest = this.lastRequest;
             if (lastRequest) {
                 lastRequest.respond(data);
+            }
+        },
+
+        /**
+         * get queries by specified param
+         * @param {Number|String|RegExp} param
+         * @returns {Request|Array<Request>}
+         */
+        get: function (param) {
+            if (utils.isNumber(param)) {
+                return this._getRequest(param);
+            }
+            return this.requests.filter(function (request) {
+                return this._isValid(request, param);
+            }, this);
+        },
+
+        /**
+         * listen request events
+         * @private
+         */
+        _listenRequest: function () {
+            var self = this;
+            Request.onCreate(function (request) {
+                self.requests.push(request);
+            });
+            Request.onSend(function () {
+                self._applyResponses();
+            });
+        },
+
+        /**
+         * apply response to request
+         * @param {Number} id
+         * @param {Object} response
+         * @private
+         */
+        _applyResonseToId: function (id, response) {
+            var request = this._getRequest(id);
+            if (request) {
+                request.respond(response);
+            }
+        },
+
+        /**
+         * apply response
+         * @private
+         */
+        _applyResponses: function () {
+            this._applyUrlResponse();
+            this._applyAllResponse()
+        },
+
+        /**
+         * apply response to specific urls
+         * @private
+         */
+        _applyUrlResponse: function () {
+            this.requests.forEach(function (request) {
+                this.urlResponseBuffer.forEach(function (data) {
+                    if (this._isValid(request, data.rule)) {
+                        request.respond(data.response);
+                    }
+                }, this);
+            }, this);
+        },
+
+        /**
+         * is valid request url for specified rule
+         * @param {Request} request
+         * @param {String|RegExp} rule
+         * @private
+         */
+        _isValid: function (request, rule) {
+            if (utils.isRegexp(rule)) {
+                return rule.test(request.url);
+            }
+            if (utils.isString(rule)) {
+                return this._isValidURI(request, rule);
+            }
+        },
+
+        /**
+         * is equal uri
+         * @param {Request} request
+         * @param {String} rule
+         * @returns {*|Boolean}
+         * @private
+         */
+        _isValidURI: function (request, rule) {
+            var compareURI = new URI(rule);
+            var originalURI = request.uri;
+            return utils.isEqualsURI(originalURI, compareURI);
+        },
+
+        /**
+         * apply response to all requests
+         * @private
+         */
+        _applyAllResponse: function () {
+            if (this.responseToAll) {
+                this.requests.forEach(function (request) {
+                    this._applyReponse(request, this.responseToAll);
+                }, this);
+            }
+        },
+
+        /**
+         * respond to request
+         * @param {Request} request
+         * @param {Object} response
+         * @private
+         */
+        _applyReponse: function (request, response) {
+            if (!request.responded) {
+                request.respond(response);
+            }
+        },
+
+        /**
+         * get request by number
+         * @param {Number} reqNumber
+         * @returns {*}
+         */
+        _getRequest: function (reqNumber) {
+            if (this.requests[reqNumber]) {
+                return this.requests[reqNumber];
             }
         },
 
