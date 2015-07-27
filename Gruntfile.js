@@ -47,7 +47,14 @@ module.exports = function (grunt) {
         build: 'src/**/*.js'
     });
 
+    grunt.config('mochaTest.request', {
+        src: [
+            'test/**/*.js'
+        ]
+    });
+
+    grunt.registerTask('test', ['mochaTest:request']);
     grunt.registerTask('code', ['jshint:build', 'jscs']);
     grunt.registerTask('build', ['webpack:build', 'uglify:build', 'clean:build']);
-    grunt.registerTask('default', ['code', 'build']);
+    grunt.registerTask('default', ['code', 'test', 'build']);
 };
