@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/acvetkov/fake-request.svg?branch=master)](https://travis-ci.org/acvetkov/fake-request)
 [![Code Climate](https://codeclimate.com/github/acvetkov/fake-request/badges/gpa.svg)](https://codeclimate.com/github/acvetkov/fake-request)
+[![npm version](https://badge.fury.io/js/fake-request.svg)](http://badge.fury.io/js/fake-request)
 
 XMLHttpRequest mocker for testing your awesome js-code.
 
