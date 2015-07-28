@@ -22,7 +22,6 @@
          * Replace XMLHttpRequest by fake request
          */
         mock: function () {
-            var self = this;
             if (!this.isFakeSet) {
                 this.isFakeSet = true;
                 this.cache = this.globalScope.XMLHttpRequest;
@@ -185,7 +184,7 @@
         _applyAllResponse: function () {
             if (this.responseToAll) {
                 this.requests.forEach(function (request) {
-                    this._applyReponse(request, this.responseToAll);
+                    this._applyResponse(request, this.responseToAll);
                 }, this);
             }
         },
@@ -196,7 +195,7 @@
          * @param {Object} response
          * @private
          */
-        _applyReponse: function (request, response) {
+        _applyResponse: function (request, response) {
             if (!request.responded) {
                 request.respond(response);
             }
