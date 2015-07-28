@@ -230,6 +230,11 @@ and finally you can use CommonJS version like Node.js
 var FakeRequest = require('path/to/fake-request');
 ```
 
+Api doc
+-------
+
+https://github.com/acvetkov/fake-request/wiki/Api
+
 Tests
 -----
 
