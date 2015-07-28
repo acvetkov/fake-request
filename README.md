@@ -190,7 +190,7 @@ Node.js >= 0.10
 var FakeRequest = require('fake-request');
 ```
 
-The goal of this module is testing XMLHttp request on Node.js platform, but you can make build for real browser or PhantomJS.
+The goal of this module is testing XMLHttpRequest on Node.js platform, but you can make build for real browser or PhantomJS.
 
 At first install devDependencies
 
