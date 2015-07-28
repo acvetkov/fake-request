@@ -1,5 +1,6 @@
-Fake request
-============
+# Fake request
+
+[![Build Status](https://travis-ci.org/acvetkov/fake-request.svg?branch=master)](https://travis-ci.org/acvetkov/fake-request)
 
 XMLHttpRequest mocker for testing your awesome js-code.
 
@@ -164,7 +165,7 @@ You can get any request by FakeRequest.get();
 ```javascript
 // by number
 FakeRequest.get(0) // returns first request
-FakeRequest.get(0).respond(response); // respond to last
+FakeRequest.get(0).respond(response); // respond to first
 // by regexp
 FakeRequest.get(/mydomain\.com/).forEach(function (req) {
     req.respond(response);
@@ -195,7 +196,7 @@ The goal of this module is testing XMLHttpRequest on Node.js platform, but you c
 At first install devDependencies
 
 ```javascript
-npm install fake-request --save-dev
+npm install fake-request
 ```
 
 and make packed UMD version (require.js, CommonJS, global)
@@ -231,7 +232,7 @@ Tests
 -----
 
 ```javascript
-npm install fake-request --save-dev
+npm install fake-request
 ```
 
 ```javascript
