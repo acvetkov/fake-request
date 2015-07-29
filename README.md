@@ -71,7 +71,7 @@ it('should have correct body', function () {
 });
 ```
 
-Maybe you pass FormData/Blob/ArrayBuffer? 
+Maybe you pass FormData/Blob/ArrayBuffer?
 
 ```javascript
 var body = new Blob();
@@ -213,14 +213,14 @@ and in your browser code
 ```html
 <script src='path/to/fake-request.0.0.2.min.js'>
 ```
-or 
+or
 
 ```js
 // require.js
 define(['path/to/fake-request'], function (FakeRequest) {
     FakeRequest.mock();
 });
-// or 
+// or
 var FakeRequest = requirejs('path/to/fake-request');
 ```
 
@@ -238,11 +238,10 @@ https://github.com/acvetkov/fake-request/wiki/Api
 Tests
 -----
 
-```javascript
-npm install fake-request
-```
-
-```javascript
+```bash
+git clone https://github.com/acvetkov/fake-request.git
+cd fake-request
+npm install
 grunt test
 ```
 
