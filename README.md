@@ -6,15 +6,13 @@
 
 XMLHttpRequest mocker for testing your awesome js-code.
 
-Installation
-------------
+## Installation
 
 ```
 npm install fake-request
 ```
 
-Cooking with pleasure
----------------------
+## Cooking with pleasure
 
 Simple module with request:
 
@@ -109,8 +107,43 @@ it('should have correct request headers', function () {
 });
 ```
 
-What about response
--------------------
+## What about response
+
+FakeRequest support 3 response types:
+
+- success response (respond method), load event triggered
+- error response (fail method), error event triggered
+- abort response (abort method), abort event triggered
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.addEventListener('load', function (event) {
+    // this = xhr
+    // event.type = 'load'
+    // event.target = xhr
+});
+```
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.onerror = function (event) {
+    // this = xhr
+    // event.type = 'error'
+    // event.target = xhr
+};
+```
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.onabort = function (event) {
+    // this = xhr
+    // event.type = 'abort'
+    // event.target = xhr
+};
+```
+
+### respond
+
 
 ```javascript
 it('should be ...', function () {
@@ -159,8 +192,23 @@ or respond to last
 FakeRequest.respondToLast(response);
 ```
 
-Get request
------------
+### fail
+
+```js
+FakeRequest.lastRequest.fail({
+    status: 503
+});
+```
+
+### abort
+
+```js
+FakeRequest.lastRequest.abort({
+    status: 503
+});
+```
+
+## Get request
 
 You can get any request by FakeRequest.get();
 

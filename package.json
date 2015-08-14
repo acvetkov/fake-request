@@ -1,6 +1,6 @@
 {
   "name": "fake-request",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "src/fake-request.js",
   "description": "Mocking XMLHttpRequest for testing on Node.js",
   "homepage": "https://github.com/acvetkov/fake-request",
