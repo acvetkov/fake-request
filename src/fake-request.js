@@ -65,7 +65,7 @@
          */
         respondTo: function (req, data) {
             if (utils.isNumber(req)) {
-                return this._applyResonseToId(req, data);
+                return this._applyResponseToId(req, data);
             }
             this.urlResponseBuffer.push({
                 rule: req,
@@ -119,7 +119,7 @@
          * @param {Object} response
          * @private
          */
-        _applyResonseToId: function (id, response) {
+        _applyResponseToId: function (id, response) {
             var request = this._getRequest(id);
             if (request) {
                 request.respond(response);
