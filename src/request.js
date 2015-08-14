@@ -95,9 +95,8 @@
         abort: function (data) {
             this._applyResponse(data);
             this._aborted = true;
-            if (utils.isFunction(this.onabort)) {
-                this.onabort.call(this);
-            }
+            this._responded = true;
+            this._callHandler('abort');
         },
 
         /**
@@ -132,10 +131,19 @@
          * @param {Object} data
          */
         respond: function (data) {
+            data.status = data.status || 200;
             this._applyResponse(data);
-            if (utils.isFunction(this.onload)) {
-                this.onload.call(this);
-            }
+            this._callHandler('load');
+            this._responded = true;
+        },
+
+        /**
+         * fail request
+         * @param data
+         */
+        fail: function (data) {
+            this._applyResponse(data);
+            this._callHandler('error');
             this._responded = true;
         },
 
@@ -160,6 +168,21 @@
             return Object.keys(this.headers).map(function (header) {
                 return header + ': ' + this.headers[header];
             }, this).join('\n');
+        },
+
+        /**
+         * call event handler
+         * @param {String} type
+         * @private
+         */
+        _callHandler: function (type) {
+            var handler = this['on' + type];
+            if (utils.isFunction(handler)) {
+                handler.call(this, {
+                    target: this,
+                    type: type
+                });
+            }
         },
 
         /**
