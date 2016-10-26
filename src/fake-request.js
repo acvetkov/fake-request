@@ -5,7 +5,7 @@
     'use strict';
 
     var Request = require('./request');
-    var URI = require('URIjs');
+    var URI = require('urijs');
     var utils = require('./utils');
 
     module.exports = {

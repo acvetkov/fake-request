@@ -2,7 +2,7 @@
 
     'use strict';
 
-    var URI = require('URIjs');
+    var URI = require('urijs');
     var utils = require('./utils');
 
     var onCreateCallback;
@@ -234,7 +234,7 @@
 
         /**
          *
-         * @returns {URIjs|*}
+         * @returns {urijs|*}
          */
         get uriObject() {
             return this._urlObject;
@@ -282,7 +282,7 @@
         },
 
         /**
-         * URIjs object
+         * urijs object
          * @returns {*|exports|module.exports}
          */
         get uri() {

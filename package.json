@@ -1,6 +1,6 @@
 {
   "name": "fake-request",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "src/fake-request.js",
   "description": "Mocking XMLHttpRequest for testing on Node.js",
   "homepage": "https://github.com/acvetkov/fake-request",
@@ -13,7 +13,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "URIjs": "^1.15.2"
+    "urijs": "^1.18.2"
   },
   "devDependencies": {
     "chai": "^3.2.0",
