@@ -39,7 +39,7 @@ it('should send request', function () {
     assert.lengthOf(FakeRequest.requests, 1);
 });
 it('should set correct url', function () {
-    var uri = FakeRequest.lastRequest.uri; // URIjs inside!
+    var uri = FakeRequest.lastRequest.uri; // urijs inside!
     assert.equal(uri.host(), 'my-domain.com');
     assert.equal(uri.protocol(), 'http');
     assert.equal(uri.pathname(), '/path/');
